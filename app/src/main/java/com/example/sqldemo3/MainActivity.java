@@ -2,6 +2,7 @@ package com.example.sqldemo3;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
@@ -22,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     Button btn_add;
     Button btn_edit;
     Button btn_delete;
+    Button btn_toWeb;
     EditText et_comment;
     EditText et_money;
     TextView tv_id;
@@ -38,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
         btn_add = findViewById(R.id.btn_Add);
         btn_edit = findViewById(R.id.btn_editButton);
         btn_delete = findViewById(R.id.btn_delete);
+        btn_toWeb = findViewById(R.id.btn_TakeToWeb);
         et_comment = findViewById(R.id.et_Comment);
         et_money = findViewById(R.id.et_moneyPrice);
         lv_comment = findViewById(R.id.lv_CommentList);
@@ -139,6 +142,14 @@ public class MainActivity extends AppCompatActivity {
                 boolean b = databaseHelper.deleteOne(commentModel);
                 showCommentListView(databaseHelper);
 
+            }
+        });
+
+
+        btn_toWeb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, MainActivity2.class));
             }
         });
 
