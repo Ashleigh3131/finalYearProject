@@ -4,6 +4,9 @@ import java.text.DecimalFormat;
 
 public class CommentModel {
 
+    //getting and setters of id, comment and money
+    //constructor as well to create a comment model
+
     private int id;
     private String comment;
 
