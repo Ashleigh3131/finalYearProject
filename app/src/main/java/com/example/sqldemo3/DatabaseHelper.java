@@ -1,5 +1,5 @@
 package com.example.sqldemo3;
-
+//guidance from https://www.google.com/search?q=sqlite+android+tutorial&biw=768&bih=730&tbm=vid&sxsrf=ALiCzsZ7qbUKyKiZE_-elXNW6pzIgatefg%3A1671546937079&ei=OcihY-y-BJnngAbgg4L4Cw&oq=sqlite+andoidtutorial&gs_lcp=Cg1nd3Mtd2l6LXZpZGVvEAMYADIHCAAQgAQQDTIHCAAQgAQQDTIGCAAQHhANMgYIABAeEA0yCAgAEAUQHhANMggIABAFEB4QDTIICAAQCBAeEA0yCAgAEAgQHhANMggIABAIEB4QDTIICAAQCBAeEA06BAgjECc6BQgAEIAEOgQIABBDOgcIIxCwAhAnOgYIABAHEB46CAgAEAgQBxAeOgUIABCGA1CRIljTWWDoc2gJcAB4AIABaIgBjgmSAQQxNC4xmAEAoAEBwAEB&sclient=gws-wiz-video#fpstate=ive&vld=cid:f87a4d3f,vid:312RhjfetP8
 import static android.app.DownloadManager.COLUMN_ID;
 
 import android.content.ContentValues;
@@ -86,8 +86,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 double money = cursor.getDouble(2);
 
                 //commentModel is my class that has the getting and setters and constructors so I can easily build my comment model
-                CommentModel commentModel = new CommentModel(commentInt, comment, money);
-                returnCommentList.add(commentModel);
+//                CommentModel commentModel = new CommentModel(commentInt, comment, money);
+//                returnCommentList.add(commentModel);
 
             }while(cursor.moveToNext());
         }else{
@@ -147,7 +147,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ContentValues contentValues = new ContentValues();
         contentValues.put(COLUMN_COMMENT, commentModel.getComment());
         contentValues.put(COLUMN_MONEY, commentModel.getMoney());
-        
+
         //using the update method from sqlLiteDatabase with comment_table being the table and where clause being the id
         int editOne = db.update(COMMENT_TABLE, contentValues, "id= " + commentModel.getId(), null);
 

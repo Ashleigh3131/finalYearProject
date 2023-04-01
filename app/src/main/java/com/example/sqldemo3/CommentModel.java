@@ -1,15 +1,24 @@
 package com.example.sqldemo3;
 
 import java.text.DecimalFormat;
+import java.util.Map;
 
 public class CommentModel {
+
 
     //getting and setters of id, comment and money
     //constructor as well to create a comment model
 
-    private int id;
+    //private int id;
+    private String id;
     private String comment;
+    private String userID;
 
+
+
+
+    public String getUserID() {return userID;}
+    public void setUserID(String userID) {this.userID = userID;}
     public double getMoney() {
         return money;
     }
@@ -20,13 +29,25 @@ public class CommentModel {
 
     private double money;
 
-    public int getId() {
+    public CommentModel(Map<String, ?> map) {
+        this.id = (String) map.get("id");
+        this.comment = (String) map.get("comment");
+        this.userID = (String) map.get("userID");
+        this.money = Double.parseDouble(String.valueOf(map.get("money")));
+    }
+    public String getId() {
         return id;
     }
-
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
+//    public int getId() {
+//        return id;
+//    }
+
+//    public void setId(int id) {
+//        this.id = id;
+//    }
 
     public String getComment() {
         return comment;
@@ -36,10 +57,16 @@ public class CommentModel {
         this.comment = comment;
     }
 
-    public CommentModel(int id, String comment, double money) {
+//    public CommentModel(int id, String comment, double money) {
+//        this.id = id;
+//        this.comment = comment;
+//        this.money = money;
+//    }
+    public CommentModel(String id, String comment, double money, String userID) {
         this.id = id;
         this.comment = comment;
         this.money = money;
+        this.userID = userID;
     }
 
     @Override
@@ -47,7 +74,8 @@ public class CommentModel {
         return
                 "id=" + id +
                 ", comment='" + comment + '\'' +
-                ", money=" + money ;
+                ", money=" + money +
+                ", userID=" +userID ;
     }
 
     public CommentModel() {
