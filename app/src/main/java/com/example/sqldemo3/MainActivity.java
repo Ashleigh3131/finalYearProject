@@ -39,8 +39,8 @@ public class MainActivity extends AppCompatActivity {
     //creating the objects such as buttons and editviews and adding a name to them
     Button btn_view;
     Button btn_add;
-//    Button btn_edit;
-//    Button btn_delete;
+    Button btn_edit;
+    Button btn_delete;
 //    Button btn_toWeb;
     EditText et_comment;
     EditText et_money;
@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<HashMap> itemsArrayList;
 
     DatabaseReference databaseItems;
+    CommentModel commentModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +72,8 @@ public class MainActivity extends AppCompatActivity {
         btn_toLogin = findViewById(R.id.btn_TakeToLogin);
         btn_Logout = findViewById(R.id.btn_Logout);
         btn_view = findViewById(R.id.btn_ViewAll);
+        btn_edit = findViewById(R.id.btn_editButton);
+        btn_delete = findViewById(R.id.btn_delete);
 
         itemsArrayList = new ArrayList<HashMap>();
 
@@ -96,15 +99,11 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, MainActivity3.class));
             }
         });
-        getItems();
 
         lv_comment.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-
-
-                CommentModel commentModel  = new CommentModel((Map<String, String>) adapterView.getItemAtPosition(i));
+                commentModel  = new CommentModel((Map<String, String>) adapterView.getItemAtPosition(i));
                 String commentToEdit = commentModel.getComment();
                 String moneyToEdit = String.valueOf(commentModel.getMoney());
                 if(FirebaseAuth.getInstance().getCurrentUser().getUid().equals(commentModel.getUserID())){
@@ -116,6 +115,35 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+        btn_edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String comment = et_comment.getText().toString().trim();
+                String money = et_money.getText().toString().trim();
+                //commentModel.getId();
+
+                databaseItems.child(commentModel.getId()).child("comment").setValue(comment);
+                databaseItems.child(commentModel.getId()).child("money").setValue(money);
+
+            }
+        });
+
+        btn_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //String comment = et_comment.getText().toString().trim();
+                //String money = et_money.getText().toString().trim();
+                //commentModel.getId();
+                databaseItems.child(commentModel.getId()).removeValue();
+                //databaseItems.child(commentModel.getId()).child("comment").removeValue();
+                //databaseItems.child(commentModel.getId()).child("money").removeValue();
+
+            }
+        });
+
+
+        getItems();
     }
 
     private void addItem() {
@@ -155,12 +183,28 @@ public class MainActivity extends AppCompatActivity {
 
                                                 @Override
                                                 public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+//                                                    Integer ind = (previousChildName == null) ? 0 : Integer.parseInt(previousChildName);
+//                                                    itemsArrayList.set(ind, snapshot.getValue());
+                                                    int count = 0;
+                                                    for(HashMap test: itemsArrayList){
+                                                     String getId = test.get("id").toString();
+                                                        Map<String, String> getValuesFromSnapShot = (Map<String, String>) snapshot.getValue();
+                                                        if(getId.equals(getValuesFromSnapShot.get("id"))){
+                                                          break;
+                                                        }
+                                                        count++;
+                                                    }
+
+                                                    itemsArrayList.set(count, (HashMap) snapshot.getValue());
+
+                                                    lv_comment.setAdapter(adapter);
                                                     adapter.notifyDataSetChanged();
                                                 }
 
                                                 @Override
                                                 public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-                                                    itemsArrayList.remove(snapshot.getValue(String.class));
+                                                    itemsArrayList.remove((HashMap)snapshot.getValue());
                                                     adapter.notifyDataSetChanged();
                                                 }
 
@@ -174,6 +218,7 @@ public class MainActivity extends AppCompatActivity {
 
                                                 }
                                             });
+
         lv_comment.setAdapter(adapter);
     }
 }
