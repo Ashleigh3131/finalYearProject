@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
     Button btn_add;
     Button btn_edit;
     Button btn_delete;
-//    Button btn_toWeb;
+    Button btn_toWeb;
     EditText et_comment;
     EditText et_money;
     TextView tv_id;
@@ -74,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
         btn_view = findViewById(R.id.btn_ViewAll);
         btn_edit = findViewById(R.id.btn_editButton);
         btn_delete = findViewById(R.id.btn_delete);
+        btn_toWeb = findViewById(R.id.btn_TakeToWeb);
 
         itemsArrayList = new ArrayList<HashMap>();
 
@@ -142,8 +143,18 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        btn_toWeb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                //Taking you from main activity to mainactivity 2
+                startActivity(new Intent(MainActivity.this, MainActivity2.class));
+            }
+        });
+
 
         getItems();
+
     }
 
     private void addItem() {

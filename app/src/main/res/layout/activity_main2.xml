@@ -24,4 +24,13 @@
         android:text="Web"
         app:layout_constraintTop_toBottomOf="@+id/tv_webValue"
         tools:layout_editor_absoluteX="155dp" />
+    <EditText
+        android:id="@+id/editSearchProducts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Search Products"
+        android:inputType="text"
+        tools:layout_editor_absoluteX="20dp"
+        tools:layout_editor_absoluteY="641dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

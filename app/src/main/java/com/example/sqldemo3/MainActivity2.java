@@ -2,16 +2,45 @@ package com.example.sqldemo3;
 
 //guidance from https://www.youtube.com/watch?v=PgkNC7AneKI
 
+//Jsoup.connect("https://www.ebay.co.uk/sch/i.html?_from=R40&_trksid=p2334524.m570.l1313&_nkw=xbox").get().text();
+//
+//
+//        Jsoup.connect("https://www.very.co.uk/xbox").get().text();
+//
+//        Jsoup.connect("https://www.truffleshuffle.co.uk/cartoons/disney").get().text();
+//
+//        https://www.zavvi.com/elysium.search?search=disney
+//
+//        https://www.secretsales.com/search/shop-by/q/vans/
+//
+//        Jsoup.connect("https://www.homebase.co.uk/storage-home/furniture/sofas-sofa-beds.list?search=sofa").get().text();
+//
+//        Jsoup.connect("https://www.dunelm.com/search?q=shelves").get().text();
+//
+//        Jsoup.connect("https://www.homebargains.co.uk/search.aspx?searchterms=soap").get().text();
+//
+//        Jsoup.connect("https://www.wilko.com/en-uk/search/?text=sofa").get().text();
+//        Jsoup.connect("https://www.houseoffraser.co.uk/searchresults?descriptionfilter=coat").get().text();
+//        Jsoup.connect("https://www.johnlewis.com/search?search-term=ted%20baker").get().text();
+//        Jsoup.connect("https://www.urbanoutfitters.com/en-gb/search?q=weed").get().text();
+//        Jsoup.connect("https://365games.co.uk/search.php?search_query=disney&section=product").get().text();
+
+//guidance from https://www.youtube.com/watch?v=PgkNC7AneKI
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 
 import java.io.IOException;
 
@@ -20,6 +49,7 @@ public class MainActivity2 extends AppCompatActivity {
     //Creating the objects of textview and button
     TextView tv_webSiteVal;
     Button btn_webSite;
+    EditText edt_searchValues;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +62,7 @@ public class MainActivity2 extends AppCompatActivity {
         //Making textview scrollable as there is a lot of text
         tv_webSiteVal.setMovementMethod(new ScrollingMovementMethod());;
         btn_webSite = findViewById(R.id.btn_getWeb);
+        edt_searchValues = findViewById(R.id.editSearchProducts);
 
         //when button is clicked then call the doIt method
         btn_webSite.setOnClickListener(new View.OnClickListener() {
@@ -45,6 +76,7 @@ public class MainActivity2 extends AppCompatActivity {
 
     public class doIT extends AsyncTask<Void,Void,Void> {
         String words;
+        private WebView webView;
 
         @Override
         protected Void doInBackground(Void... params) {
@@ -54,18 +86,161 @@ public class MainActivity2 extends AppCompatActivity {
 
             //Using jsoup libray to help with the coding -- into gradle dependency
             org.jsoup.nodes.Document document = null;
+            org.jsoup.nodes.Document zavviDoc = null;
+            org.jsoup.nodes.Document truffleShuffleDoc = null;
+            org.jsoup.nodes.Document secretSalesDoc = null;
+            Document dunelmDoc;
+            Document homeBargainsDoc;
+            Document wilkoDoc;
+            Document houseOfFraserDoc;
+            Document johnLewisDoc;
+            Document urbanOutfittersDoc;
+            Document games365Doc;
+            Document ebayDoc;
+
             try {
+
+                String value = edt_searchValues.getText().toString();
+                // String value = "xbox";
                 //calling the url, and having access to the internet through the use of jsoup
                 //have added permission into manifest file to allow app to use the internet
-                document = Jsoup.connect("https://www.vans.co.uk/shop/en-gb/vans-gb/women-shoes").get();
+                // document = Jsoup.connect("https://www.vans.co.uk/shop/en-gb/vans-gb/women-shoes").get();
+                document =  Jsoup.connect("https://www.very.co.uk/" + value).get();
+
+                zavviDoc = Jsoup.connect("https://www.zavvi.com/elysium.search?search=" + value).get();
+
+                String zavviResults = zavviDoc.getElementsByClass("productListProducts_product").text();
+                Elements zavviFirstValue = zavviDoc.getElementsByClass("productListProducts_product");
+                if (zavviDoc != null && zavviFirstValue.size() > 0) {
+                    zavviFirstValue.get(0);
+                } else {
+                    return null;
+                }
+
+//               truffleShuffleDoc  = Jsoup.connect("https://www.truffleshuffle.co.uk/cartoons/" + value).get();
+//
+//               String truffleShuffleValues = truffleShuffleDoc.getElementsByClass("searchResult").text();
+
+                secretSalesDoc  = Jsoup.connect(" https://www.secretsales.com/search/shop-by/q/" + value + "/").get();
+
+                String secretSalesValues = secretSalesDoc.getElementsByClass("c-listings__item").text();
+                Elements secretFirstValue = secretSalesDoc.getElementsByClass("c-listings__item");
+                if (secretSalesDoc != null && secretFirstValue.size() > 0) {
+                    secretFirstValue.get(0);
+                } else {
+                    return null;
+                }
+
+                dunelmDoc  = Jsoup.connect("https://www.dunelm.com/search?q=" + value).get();
+
+                String dunelmValues = dunelmDoc.getElementsByClass("e19x7edn1 dw-qoox9g-A--Link-StyleLessLink--SearchResultProductCard e1s4u2np0").text();
+                Elements dunelmFirstValue = dunelmDoc.getElementsByClass("e19x7edn1 dw-qoox9g-A--Link-StyleLessLink--SearchResultProductCard e1s4u2np0");
+                if (dunelmDoc != null && dunelmFirstValue.size() > 0) {
+                    dunelmFirstValue.get(0);
+
+                } else {
+                    return null;
+                }
+
+                homeBargainsDoc  = Jsoup.connect("https://www.homebargains.co.uk/search.aspx?searchterms=" + value).get();
+
+                String homeBargainsValues = homeBargainsDoc.getElementsByClass("item-box").text();
+                Elements homeFirstValue = homeBargainsDoc.getElementsByClass("item-box");
+                if (homeBargainsDoc != null && homeFirstValue.size() > 0) {
+                    homeFirstValue.get(0);
+
+                } else {
+                    return null;
+                }
+
+                wilkoDoc  = Jsoup.connect("https://www.wilko.com/en-uk/search/?text=" + value).get();
+
+                String wilkoValues = wilkoDoc.getElementsByClass("product-item js-product-data").text();
+                Elements wilkoFirstValue = wilkoDoc.getElementsByClass("product-item js-product-data");
+                if (wilkoDoc != null && wilkoFirstValue.size() > 0) {
+                    wilkoFirstValue.get(0);
+
+                } else {
+                    return null;
+                }
+
+//                houseOfFraserDoc  = Jsoup.connect("https://www.houseoffraser.co.uk/searchresults?descriptionfilter=" + value).get();
+//                houseOfFraserDoc = Jsoup.connect("https://www.houseoffraser.co.uk/brand/" + value).get();
+//                String houseOfFraserValues = houseOfFraserDoc.getElementsByClass("s-productscontainer2 plp-products-container frasers-plus-force-flex").text();
+//                if (houseOfFraserDoc != null && houseOfFraserDoc.getElementsByClass("s-productscontainer2 plp-products-container frasers-plus-force-flex").size() > 0) {
+//                    houseOfFraserDoc.getElementsByClass("s-productscontainer2 plp-products-container frasers-plus-force-flex").get(0);
+//
+//                } else {
+//                    return null;
+//                }
+
+                johnLewisDoc  = Jsoup.connect("https://www.johnlewis.com/search?search-term=" + value).get();
+
+                String johnLewisValues = johnLewisDoc.getElementsByClass("ProductGrid_product-grid__product__oD7Jq").text();
+                Elements johnFirstValue = johnLewisDoc.getElementsByClass("ProductGrid_product-grid__product__oD7Jq");
+                if(johnLewisDoc != null && johnFirstValue.size() > 0){
+                    johnFirstValue.get(0);
+                }else{
+                    return null;
+                }
+
+                urbanOutfittersDoc  = Jsoup.connect("https://www.urbanoutfitters.com/en-gb/search?q=" + value).get();
+
+                String urbanOutfittersValues = urbanOutfittersDoc.getElementsByClass("c-pwa-tile-grid-inner").text();
+                Elements urbanFirstValue = urbanOutfittersDoc.getElementsByClass("c-pwa-tile-grid-inner");
+                if(urbanOutfittersDoc != null && urbanFirstValue.size() > 0){
+                    urbanFirstValue.get(0);
+                }else {
+                    return null;
+                }
+
+                games365Doc = Jsoup.connect("https://365games.co.uk/search.php?search_query=" + value + "&section=product").get();
+
+                String games365Values = games365Doc.getElementsByClass("product").text();
+                Elements gameFirstValue = games365Doc.getElementsByClass("product");
+                if(games365Doc != null && gameFirstValue.size() > 0){
+                    gameFirstValue.get(0);
+                }else {
+                    return null;
+                }
+
+                ebayDoc = Jsoup.connect("https://www.ebay.co.uk/sch/i.html?_from=R40&_trksid=p2334524.m570.l1313&_nkw=" + value ).get();
+
+                String ebayValues = ebayDoc.getElementsByClass("s-item__wrapper clearfix").text();
+                Elements ebayFirstValue = ebayDoc.getElementsByClass("s-item__wrapper clearfix");
+                if(ebayDoc != null && ebayFirstValue.size() > 0){
+                    ebayFirstValue.get(3);
+                    //starts from 3 due to website layout
+                }else {
+                    return null;
+                }
+
+
+//                Connection connection = Jsoup.connect("https://www.office.co.uk/brand/");
+//
+//                //specify user agent
+//                connection.userAgent("Mozilla/5.0");
+//
+//                //get the HTML document
+//                Document doc = connection.get();
+//
+//
+//                webView.getSettings().setJavaScriptEnabled(true);
+//                webView.loadUrl("https://www.office.co.uk/brand/crocs");
+//                document = Jsoup.connect("https://www.office.co.uk/brand/crocs").get();
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
             //using the jsoup to get product list that is returned from the url above
-            org.jsoup.select.Elements elements = document.getElementsByClass("product-list product-list-js product-list-position-relative");
+            //org.jsoup.select.Elements elements = document.getElementsByClass("product-list product-list-js product-list-position-relative");
+
+//            org.jsoup.select.Elements elements = document.getElementsByClass("product-block-info info info-js");
+//            org.jsoup.select.Elements elements = document.getElementsByClass("col-s-12 col-m-8 col-1-6");
+
+
             //making it the text and adding that text to the textview box so we can see it
-            words = elements.text();
+            //words = elements.text();
             tv_webSiteVal.setText(words);
             return null;
         }
