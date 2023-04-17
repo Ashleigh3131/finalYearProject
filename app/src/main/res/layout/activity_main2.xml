@@ -7,30 +7,77 @@
     tools:context=".MainActivity2">
 
 
-    <TextView
-        android:id="@+id/tv_webValue"
-        android:layout_width="0dp"
-        android:layout_height="501dp"
-        android:text="TextView"
-        android:scrollbars = "vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="27dp" />
+    <!--    <TextView-->
+    <!--        android:id="@+id/tv_webValue"-->
+    <!--        android:layout_width="322dp"-->
+    <!--        android:layout_height="63dp"-->
+    <!--        android:scrollbars="vertical"-->
+    <!--        android:text="TextView"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        tools:layout_editor_absoluteY="465dp" />-->
 
     <Button
         android:id="@+id/btn_getWeb"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Web"
-        app:layout_constraintTop_toBottomOf="@+id/tv_webValue"
-        tools:layout_editor_absoluteX="155dp" />
+        android:text="Search"
+        app:layout_constraintBottom_toTopOf="@+id/lv_elements"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/editSearchProducts" />
+
     <EditText
         android:id="@+id/editSearchProducts"
+        android:layout_width="286dp"
+        android:layout_height="53dp"
+        android:ems="10"
+        android:hint="Search"
+        android:inputType="text" />
+
+    <ListView
+        android:id="@+id/lv_elements"
+        android:layout_width="414dp"
+        android:layout_height="597dp"
+        android:divider="#FFCC00"
+        android:dividerHeight="2dp"
+        android:layout_weight="1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editSearchProducts" />
+
+    <Button
+        android:id="@+id/btn_TakeToHome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Search Products"
-        android:inputType="text"
-        tools:layout_editor_absoluteX="20dp"
-        tools:layout_editor_absoluteY="641dp" />
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="49dp"
+        android:text="Home"
+        app:layout_constraintEnd_toStartOf="@+id/btn_TakeToLogin"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lv_elements" />
+
+    <Button
+        android:id="@+id/btn_TakeToLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Login"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btn_Logout"
+        app:layout_constraintHorizontal_bias="0.813"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lv_elements"
+        app:layout_constraintVertical_bias="0.121" />
+
+    <Button
+        android:id="@+id/btn_Logout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="32dp"
+        android:text="Logout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lv_elements" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

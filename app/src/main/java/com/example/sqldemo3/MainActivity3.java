@@ -21,6 +21,9 @@ public class MainActivity3 extends AppCompatActivity {
     private EditText edtUsername, edtPassword, edtEmail;
     private Button btnSubmit;
     private TextView txtLoginInfo;
+    Button btn_Home;
+    Button btn_Browse;
+    Button btn_Logout;
 
     private boolean isSigningUp = true;
 
@@ -34,6 +37,9 @@ public class MainActivity3 extends AppCompatActivity {
         edtUsername = findViewById(R.id.edtUsername);
 
         btnSubmit = findViewById(R.id.btnSubmit);
+        btn_Browse = findViewById(R.id.btn_TakeToWeb);
+        btn_Home = findViewById(R.id.btn_TakeToHome);
+        btn_Logout = findViewById(R.id.btn_Logout);
 
         txtLoginInfo = findViewById(R.id.txtLoginInfo);
 
@@ -71,6 +77,30 @@ public class MainActivity3 extends AppCompatActivity {
                     btnSubmit.setText("Sign Up");
                     txtLoginInfo.setText("Existing Account: Login");
                 }
+            }
+        });
+
+        btn_Browse.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                //Taking you from main activity to mainactivity 2
+                startActivity(new Intent(MainActivity3.this, MainActivity2.class));
+            }
+        });
+
+        btn_Home.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Taking you from main activity to mainactivity 3
+                startActivity(new Intent(MainActivity3.this, MainActivity.class));
+            }
+        });
+
+        btn_Logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FirebaseAuth.getInstance().signOut();
             }
         });
 

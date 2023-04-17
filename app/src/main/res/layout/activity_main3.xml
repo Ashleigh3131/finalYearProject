@@ -55,4 +55,39 @@
         app:layout_constraintStart_toStartOf="@+id/btnSubmit"
         app:layout_constraintTop_toBottomOf="@+id/btnSubmit" />
 
+    <Button
+        android:id="@+id/btn_TakeToHome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="200dp"
+        android:text="Home"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_TakeToWeb"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtLoginInfo" />
+
+    <Button
+        android:id="@+id/btn_TakeToWeb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="Browse"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btn_Logout"
+        app:layout_constraintHorizontal_bias="0.484"
+        app:layout_constraintStart_toEndOf="@+id/btn_TakeToHome"
+        app:layout_constraintTop_toBottomOf="@+id/txtLoginInfo"
+        app:layout_constraintVertical_bias="0.995" />
+
+    <Button
+        android:id="@+id/btn_Logout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="200dp"
+        android:layout_marginEnd="36dp"
+        android:text="Logout"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_TakeToWeb"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtLoginInfo" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

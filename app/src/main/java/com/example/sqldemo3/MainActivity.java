@@ -37,7 +37,7 @@ import java.util.logging.Logger;
 public class MainActivity extends AppCompatActivity {
 
     //creating the objects such as buttons and editviews and adding a name to them
-    Button btn_view;
+    //Button btn_view;
     Button btn_add;
     Button btn_edit;
     Button btn_delete;
@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
         lv_comment = findViewById(R.id.lv_CommentList);
         btn_toLogin = findViewById(R.id.btn_TakeToLogin);
         btn_Logout = findViewById(R.id.btn_Logout);
-        btn_view = findViewById(R.id.btn_ViewAll);
+        //btn_view = findViewById(R.id.btn_ViewAll);
         btn_edit = findViewById(R.id.btn_editButton);
         btn_delete = findViewById(R.id.btn_delete);
         btn_toWeb = findViewById(R.id.btn_TakeToWeb);
@@ -89,7 +89,11 @@ public class MainActivity extends AppCompatActivity {
         btn_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addItem();
+                try {
+                    addItem();
+                } catch (Exception e) {
+                    Toast.makeText(getApplicationContext(),"Please login to add items", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -107,26 +111,31 @@ public class MainActivity extends AppCompatActivity {
                 commentModel  = new CommentModel((Map<String, String>) adapterView.getItemAtPosition(i));
                 String commentToEdit = commentModel.getComment();
                 String moneyToEdit = String.valueOf(commentModel.getMoney());
+                try{
                 if(FirebaseAuth.getInstance().getCurrentUser().getUid().equals(commentModel.getUserID())){
                     et_comment.setText(commentToEdit);
                     et_money.setText(moneyToEdit);
-                } else {
-                    Toast.makeText(getApplicationContext(),"Cannot edit item", Toast.LENGTH_SHORT).show();
                 }
-
+            } catch (Exception e) {
+                    Toast.makeText(getApplicationContext(),"Please login to modify item", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
         btn_edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String comment = et_comment.getText().toString().trim();
-                String money = et_money.getText().toString().trim();
+//                String comment = et_comment.getText().toString().trim();
+//                String money = et_money.getText().toString().trim();
                 //commentModel.getId();
-
-                databaseItems.child(commentModel.getId()).child("comment").setValue(comment);
-                databaseItems.child(commentModel.getId()).child("money").setValue(money);
-
+                try {
+                    String comment = et_comment.getText().toString().trim();
+                    String money = et_money.getText().toString().trim();
+                    databaseItems.child(commentModel.getId()).child("comment").setValue(comment);
+                    databaseItems.child(commentModel.getId()).child("money").setValue(money);
+                } catch (Exception e) {
+                    Toast.makeText(getApplicationContext(),"Please login to edit item", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -136,10 +145,13 @@ public class MainActivity extends AppCompatActivity {
                 //String comment = et_comment.getText().toString().trim();
                 //String money = et_money.getText().toString().trim();
                 //commentModel.getId();
-                databaseItems.child(commentModel.getId()).removeValue();
-                //databaseItems.child(commentModel.getId()).child("comment").removeValue();
-                //databaseItems.child(commentModel.getId()).child("money").removeValue();
-
+                try {
+                    databaseItems.child(commentModel.getId()).removeValue();
+                    //databaseItems.child(commentModel.getId()).child("comment").removeValue();
+                    //databaseItems.child(commentModel.getId()).child("money").removeValue();
+                } catch (Exception e) {
+                    Toast.makeText(getApplicationContext(),"Please login to delete item", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
