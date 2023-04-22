@@ -44,6 +44,7 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 
+import org.awaitility.Awaitility;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -51,6 +52,8 @@ import org.jsoup.select.Elements;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.Callable;
+import java.util.concurrent.TimeUnit;
 
 public class MainActivity2 extends AppCompatActivity {
 
@@ -87,6 +90,12 @@ public class MainActivity2 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 new doIT().execute();
+                //Awaitility.await().atMost(1, TimeUnit.MINUTES).until((Callable<Boolean>) new doIT().execute());
+                try {
+                    Thread.sleep(30000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 arrayAdapter = new ArrayAdapter(MainActivity2.this, android.R.layout.simple_list_item_1, arrayList);
                 lv_elements.setAdapter(arrayAdapter);
             }
@@ -119,6 +128,7 @@ public class MainActivity2 extends AppCompatActivity {
     public class doIT extends AsyncTask<Void,Void,Void> {
         String words;
         private WebView webView;
+
 
         @Override
         protected Void doInBackground(Void... params) {
@@ -160,7 +170,7 @@ public class MainActivity2 extends AppCompatActivity {
                     zavviFirstValue.get(0);
                     arrayList.add(zavviFirstValue.get(0).text());
                 } else {
-                    return null;
+                    arrayList.add("No results found");
                 }
 
 
@@ -177,7 +187,7 @@ public class MainActivity2 extends AppCompatActivity {
                     arrayList.add(secretFirstValue.get(0).text());
 
                 } else {
-                    return null;
+                    arrayList.add("No results found");
                 }
 //
                 dunelmDoc  = Jsoup.connect("https://www.dunelm.com/search?q=" + value).get();
@@ -188,7 +198,7 @@ public class MainActivity2 extends AppCompatActivity {
                     dunelmFirstValue.get(0);
                     arrayList.add(dunelmFirstValue.get(0).text());
                 } else {
-                    return null;
+                    arrayList.add("No results found");
                 }
 
                 homeBargainsDoc  = Jsoup.connect("https://www.homebargains.co.uk/search.aspx?searchterms=" + value).get();
@@ -199,7 +209,7 @@ public class MainActivity2 extends AppCompatActivity {
                     homeFirstValue.get(0);
                     arrayList.add(homeFirstValue.get(0).text());
                 } else {
-                    return null;
+                    arrayList.add("No results found");
                 }
 
                 wilkoDoc  = Jsoup.connect("https://www.wilko.com/en-uk/search/?text=" + value).get();
@@ -210,7 +220,7 @@ public class MainActivity2 extends AppCompatActivity {
                     wilkoFirstValue.get(0);
                     arrayList.add(wilkoFirstValue.get(0).text());
                 } else {
-                    return null;
+                    arrayList.add("No results found");
                 }
 
 //                houseOfFraserDoc  = Jsoup.connect("https://www.houseoffraser.co.uk/searchresults?descriptionfilter=" + value).get();
@@ -231,7 +241,7 @@ public class MainActivity2 extends AppCompatActivity {
                     johnFirstValue.get(0);
                     arrayList.add(johnFirstValue.get(0).text());
                 }else{
-                    return null;
+                    arrayList.add("No results found");
                 }
 
                 urbanOutfittersDoc  = Jsoup.connect("https://www.urbanoutfitters.com/en-gb/search?q=" + value).get();
@@ -242,7 +252,7 @@ public class MainActivity2 extends AppCompatActivity {
                     urbanFirstValue.get(0);
                     arrayList.add(urbanFirstValue.get(0).text());
                 }else {
-                    return null;
+                    arrayList.add("No results found");
                 }
 
                 games365Doc = Jsoup.connect("https://365games.co.uk/search.php?search_query=" + value + "&section=product").get();
@@ -253,7 +263,7 @@ public class MainActivity2 extends AppCompatActivity {
                     gameFirstValue.get(0);
                     arrayList.add(gameFirstValue.get(0).text());
                 }else {
-                    return null;
+                    arrayList.add("No results found");
                 }
 
                 ebayDoc = Jsoup.connect("https://www.ebay.co.uk/sch/i.html?_from=R40&_trksid=p2334524.m570.l1313&_nkw=" + value ).get();
@@ -265,7 +275,7 @@ public class MainActivity2 extends AppCompatActivity {
                     //starts from 3 due to website layout
                     arrayList.add(gameFirstValue.get(0).text());
                 }else {
-                    return null;
+                    arrayList.add("No results found");
                 }
 //                Connection connection = Jsoup.connect("https://www.office.co.uk/brand/");
 //
@@ -281,6 +291,7 @@ public class MainActivity2 extends AppCompatActivity {
 //                document = Jsoup.connect("https://www.office.co.uk/brand/crocs").get();
             } catch (Exception e) {
                 Toast.makeText(getApplicationContext(),"No Results Found", Toast.LENGTH_SHORT).show();
+                arrayList.add("No results found");
             }
 //            arrayAdapter = new ArrayAdapter(MainActivity2.this, android.R.layout.simple_list_item_1, arrayList);
 //            lv_elements.setAdapter(arrayAdapter);
@@ -295,8 +306,11 @@ public class MainActivity2 extends AppCompatActivity {
             //making it the text and adding that text to the textview box so we can see it
             //words = elements.text();
             //tv_webSiteVal.setText(words);
+
             return null;
         }
+
     }
+
 
 }

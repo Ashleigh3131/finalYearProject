@@ -8,8 +8,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -41,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
     Button btn_add;
     Button btn_edit;
     Button btn_delete;
-    Button btn_toWeb;
+    Button btn_toWebActivity;
     EditText et_comment;
     EditText et_money;
     TextView tv_id;
@@ -74,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
         //btn_view = findViewById(R.id.btn_ViewAll);
         btn_edit = findViewById(R.id.btn_editButton);
         btn_delete = findViewById(R.id.btn_delete);
-        btn_toWeb = findViewById(R.id.btn_TakeToWeb);
+        btn_toWebActivity = findViewById(R.id.btn_TakeToWeb);
 
         itemsArrayList = new ArrayList<HashMap>();
 
@@ -155,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        btn_toWeb.setOnClickListener(new View.OnClickListener() {
+        btn_toWebActivity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -200,6 +204,26 @@ public class MainActivity extends AppCompatActivity {
         databaseItems.addChildEventListener(new ChildEventListener() {
                                                 @Override
                                                 public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+//                                                    snapshot.child("Comment").getValue();
+//                                                    String t =  snapshot.child("comment").getValue().toString();
+//                                                    String m = snapshot.child("money").getValue().toString();
+//                                                    String id = snapshot.child("id").getValue().toString();
+//
+//                                                    SpannableStringBuilder builder = new SpannableStringBuilder();
+//
+//                                                    SpannableString redSpannable= new SpannableString(id);
+//                                                    redSpannable.setSpan(new ForegroundColorSpan(Color.WHITE), 0, id.length(), 0);
+//                                                    builder.append(redSpannable);
+//
+//                                                    HashMap p = new HashMap();
+//
+//                                                    p.put("comment", t);
+//                                                    p.put("money", m);
+//                                                    p.put("id", m);
+
+
+
+                                                  //  lv_comment.setTextColor(Color.parseColor("hex_code"));
                                                     itemsArrayList.add((HashMap) snapshot.getValue());
                                                     adapter.notifyDataSetChanged();
                                                 }

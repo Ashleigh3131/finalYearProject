@@ -3,4 +3,6 @@
     <string name="addComment">Add Comment</string>
     <string name="comment">comment</string>
     <string name="money">money</string>
+    <string name="add_price_of_item">Add Price Of Item</string>
+    <string name="item_to_add">Item To Add</string>
 </resources>

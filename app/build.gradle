@@ -47,4 +47,5 @@ dependencies {
 
     implementation 'org.jsoup:jsoup:1.13.1'
     testImplementation 'junit:junit:4.13.2'
+    implementation group: 'org.awaitility', name: 'awaitility', version: '3.0.0'
 }
