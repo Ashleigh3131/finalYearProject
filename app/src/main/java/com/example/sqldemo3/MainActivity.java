@@ -133,12 +133,16 @@ public class MainActivity extends AppCompatActivity {
 //                String money = et_money.getText().toString().trim();
                 //commentModel.getId();
                 try {
-                    String comment = et_comment.getText().toString().trim();
-                    String money = et_money.getText().toString().trim();
-                    databaseItems.child(commentModel.getId()).child("comment").setValue(comment);
-                    databaseItems.child(commentModel.getId()).child("money").setValue(money);
+                    if(commentModel.getComment() != null || commentModel.getMoney() != 0.0d) {
+                        String comment = et_comment.getText().toString().trim();
+                        String money = et_money.getText().toString().trim();
+                        databaseItems.child(commentModel.getId()).child("comment").setValue(comment);
+                        databaseItems.child(commentModel.getId()).child("money").setValue(money);
+                    }else{
+                        Toast.makeText(getApplicationContext(), "Comment or Money is null, please enter values", Toast.LENGTH_SHORT).show();
+                    }
                 } catch (Exception e) {
-                    Toast.makeText(getApplicationContext(),"Please login to edit item", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),"Please login or enter an item to edit", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -150,11 +154,16 @@ public class MainActivity extends AppCompatActivity {
                 //String money = et_money.getText().toString().trim();
                 //commentModel.getId();
                 try {
-                    databaseItems.child(commentModel.getId()).removeValue();
+                    if(commentModel.getComment() != null || commentModel.getMoney() != 0.0d) {
+                        databaseItems.child(commentModel.getId()).removeValue();
+                        Toast.makeText(getApplicationContext(), "Deleted successfully", Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(getApplicationContext(), "Comment or Money is null, please enter values", Toast.LENGTH_SHORT).show();
+                    }
                     //databaseItems.child(commentModel.getId()).child("comment").removeValue();
                     //databaseItems.child(commentModel.getId()).child("money").removeValue();
                 } catch (Exception e) {
-                    Toast.makeText(getApplicationContext(),"Please login to delete item", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),"Please login or enter an item to delete", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -172,6 +181,7 @@ public class MainActivity extends AppCompatActivity {
         getItems();
 
     }
+    //String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
     private void addItem() {
         String comment = et_comment.getText().toString().trim();
@@ -181,7 +191,6 @@ public class MainActivity extends AppCompatActivity {
         if (!money1.isEmpty() && !comment.isEmpty()) {
             Double money = Double.parseDouble(money1);
             String id = databaseItems.push().getKey();
-            //String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
             CommentModel commentModel = new CommentModel(id, comment, money, userId);
 
@@ -189,7 +198,7 @@ public class MainActivity extends AppCompatActivity {
 
             Toast.makeText(this, "Item added", Toast.LENGTH_SHORT).show();
         }else if(comment.isEmpty()){
-            Toast.makeText(this, "Please enter a Comment", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Please enter an Item", Toast.LENGTH_SHORT).show();
         }else{
             Toast.makeText(this, "Please enter a Price", Toast.LENGTH_SHORT).show();
         }

@@ -48,7 +48,7 @@ public class MainActivity3 extends AppCompatActivity {
             public void onClick(View view) {
 
                 if(edtPassword.getText().toString().isEmpty() || edtEmail.getText().toString().isEmpty()){
-                    if(isSigningUp && edtUsername.getText().toString().isEmpty()){
+                    if(isSigningUp && edtUsername.getText().toString().isEmpty()){ //line does not work ???? why???
                         Toast.makeText(MainActivity3.this, "Empty Fields Error", Toast.LENGTH_SHORT).show();
                         return;
                     }

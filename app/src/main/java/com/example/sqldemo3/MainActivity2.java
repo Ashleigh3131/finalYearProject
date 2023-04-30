@@ -51,9 +51,13 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class MainActivity2 extends AppCompatActivity {
 
@@ -105,9 +109,46 @@ public class MainActivity2 extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //Taking you from main activity to mainactivity 3
-                startActivity(new Intent(MainActivity2.this, MainActivity.class));
+              //  startActivity(new Intent(MainActivity2.this, MainActivity.class));
+
+
+                if(arrayList.size()>1){
+                    List<Double> t = new ArrayList<>();
+                    for(int i=0; i <arrayList.size(); i++) {
+                        String getWebsiteInfo = arrayList.get(i);
+                        if(!getWebsiteInfo.contains("No results found")) {
+                            double getValue = Double.parseDouble(getMoney(getWebsiteInfo));
+                            t.add(getValue);
+                        }else{
+                            t.add(0.0);
+                        }
+                    }
+
+                    Collections.sort(t);
+                    ArrayList<String> arrayListNew = new ArrayList<>();
+                    for(int i=0; i<arrayList.size(); i++){
+                      for(int j=0; j<t.size(); j++){
+                          if(arrayList.get(j).contains("£"+t.get(i).toString())){
+                              arrayListNew.add(arrayList.get(j));
+                              arrayList.remove(arrayList.get(j));
+                              arrayList.add("te");
+                              break;
+                          }
+                      }
+                    }
+
+                    arrayList.clear();
+                    arrayList = arrayListNew;
+
+                    arrayAdapter = new ArrayAdapter(MainActivity2.this, android.R.layout.simple_list_item_1, arrayList);
+                    lv_elements.setAdapter(arrayAdapter);
+
+
+                }
             }
         });
+
+
 
         btn_Logout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -125,14 +166,38 @@ public class MainActivity2 extends AppCompatActivity {
 
     }
 
+
+    protected String getMoney(String websiteValue){
+        Pattern decimalNumPattern = Pattern.compile("-?\\d+(\\.\\d+)?");
+        Matcher matcher = decimalNumPattern.matcher(websiteValue);
+
+        List<String> decimalNumList = new ArrayList<>();
+        while (matcher.find()) {
+            decimalNumList.add(matcher.group());
+        }
+        List<String> NewListNumList = new ArrayList<>();
+
+        for(String t: decimalNumList){
+            if(t.contains(".")){
+                NewListNumList.add(t);
+            }
+        }
+        if(NewListNumList.isEmpty()){
+            NewListNumList.add(decimalNumList.get(0));
+        }
+        Collections.sort(NewListNumList);
+        return NewListNumList.get(0);
+    }
+
     public class doIT extends AsyncTask<Void,Void,Void> {
         String words;
         private WebView webView;
 
 
+
         @Override
         protected Void doInBackground(Void... params) {
-
+        arrayList.clear();
             //I used jsoup for this  jsoup is ........
 
 
@@ -163,15 +228,33 @@ public class MainActivity2 extends AppCompatActivity {
 
                 zavviDoc = Jsoup.connect("https://www.zavvi.com/elysium.search?search=" + value).get();
                 //arrayAdapter = new ArrayAdapter(MainActivity2.this, android.R.layout.simple_list_item_1, arrayList);
-
+                String getFirst = null;
                 String zavviResults = zavviDoc.getElementsByClass("productListProducts_product").text();
                 Elements zavviFirstValue = zavviDoc.getElementsByClass("productListProducts_product");
                 if (zavviDoc != null && zavviFirstValue.size() > 0) {
-                    zavviFirstValue.get(0);
+                     //getFirst = zavviFirstValue.get(0).text();
                     arrayList.add(zavviFirstValue.get(0).text());
                 } else {
                     arrayList.add("No results found");
                 }
+
+
+//                Pattern decimalNumPattern = Pattern.compile("-?\\d+(\\.\\d+)?");
+//                Matcher matcher = decimalNumPattern.matcher(getFirst);
+//
+//                List<String> decimalNumList = new ArrayList<>();
+//                while (matcher.find()) {
+//                    decimalNumList.add(matcher.group());
+//                }
+//
+//                Collections.sort(decimalNumList);
+//                for(String t: decimalNumList){
+//                    if(!t.contains(".")){
+//                        decimalNumList.remove(t);
+//                    }
+//                }
+//                System.out.println("testing " + decimalNumList.toString());
+
 
 
 //               truffleShuffleDoc  = Jsoup.connect("https://www.truffleshuffle.co.uk/cartoons/" + value).get();
@@ -183,7 +266,7 @@ public class MainActivity2 extends AppCompatActivity {
                 String secretSalesValues = secretSalesDoc.getElementsByClass("c-listings__item").text();
                 Elements secretFirstValue = secretSalesDoc.getElementsByClass("c-listings__item");
                 if (secretSalesDoc != null && secretFirstValue.size() > 0) {
-                    secretFirstValue.get(0);
+                   // secretFirstValue.get(0);
                     arrayList.add(secretFirstValue.get(0).text());
 
                 } else {
@@ -192,21 +275,21 @@ public class MainActivity2 extends AppCompatActivity {
 //
                 dunelmDoc  = Jsoup.connect("https://www.dunelm.com/search?q=" + value).get();
 
-                String dunelmValues = dunelmDoc.getElementsByClass("e19x7edn1 dw-qoox9g-A--Link-StyleLessLink--SearchResultProductCard e1s4u2np0").text();
-                Elements dunelmFirstValue = dunelmDoc.getElementsByClass("e19x7edn1 dw-qoox9g-A--Link-StyleLessLink--SearchResultProductCard e1s4u2np0");
-                if (dunelmDoc != null && dunelmFirstValue.size() > 0) {
-                    dunelmFirstValue.get(0);
-                    arrayList.add(dunelmFirstValue.get(0).text());
-                } else {
-                    arrayList.add("No results found");
-                }
+//                String dunelmValues = dunelmDoc.getElementsByClass("e19x7edn1 dw-qoox9g-A--Link-StyleLessLink--SearchResultProductCard e1s4u2np0").text();
+//                Elements dunelmFirstValue = dunelmDoc.getElementsByClass("e19x7edn1 dw-qoox9g-A--Link-StyleLessLink--SearchResultProductCard e1s4u2np0");
+//                if (dunelmDoc != null && dunelmFirstValue.size() > 0) {
+//                    dunelmFirstValue.get(0);
+//                    arrayList.add(dunelmFirstValue.get(0).text());
+//                } else {
+//                    arrayList.add("No results found");
+//                }
 
                 homeBargainsDoc  = Jsoup.connect("https://www.homebargains.co.uk/search.aspx?searchterms=" + value).get();
 
                 String homeBargainsValues = homeBargainsDoc.getElementsByClass("item-box").text();
                 Elements homeFirstValue = homeBargainsDoc.getElementsByClass("item-box");
                 if (homeBargainsDoc != null && homeFirstValue.size() > 0) {
-                    homeFirstValue.get(0);
+                   // homeFirstValue.get(0);
                     arrayList.add(homeFirstValue.get(0).text());
                 } else {
                     arrayList.add("No results found");
@@ -217,7 +300,7 @@ public class MainActivity2 extends AppCompatActivity {
                 String wilkoValues = wilkoDoc.getElementsByClass("product-item js-product-data").text();
                 Elements wilkoFirstValue = wilkoDoc.getElementsByClass("product-item js-product-data");
                 if (wilkoDoc != null && wilkoFirstValue.size() > 0) {
-                    wilkoFirstValue.get(0);
+                   // wilkoFirstValue.get(0);
                     arrayList.add(wilkoFirstValue.get(0).text());
                 } else {
                     arrayList.add("No results found");
@@ -238,7 +321,7 @@ public class MainActivity2 extends AppCompatActivity {
                 String johnLewisValues = johnLewisDoc.getElementsByClass("ProductGrid_product-grid__product__oD7Jq").text();
                 Elements johnFirstValue = johnLewisDoc.getElementsByClass("ProductGrid_product-grid__product__oD7Jq");
                 if(johnLewisDoc != null && johnFirstValue.size() > 0){
-                    johnFirstValue.get(0);
+                   // johnFirstValue.get(0);
                     arrayList.add(johnFirstValue.get(0).text());
                 }else{
                     arrayList.add("No results found");
@@ -249,7 +332,7 @@ public class MainActivity2 extends AppCompatActivity {
                 String urbanOutfittersValues = urbanOutfittersDoc.getElementsByClass("c-pwa-tile-grid-inner").text();
                 Elements urbanFirstValue = urbanOutfittersDoc.getElementsByClass("c-pwa-tile-grid-inner");
                 if(urbanOutfittersDoc != null && urbanFirstValue.size() > 0){
-                    urbanFirstValue.get(0);
+                   // urbanFirstValue.get(0);
                     arrayList.add(urbanFirstValue.get(0).text());
                 }else {
                     arrayList.add("No results found");
@@ -260,7 +343,7 @@ public class MainActivity2 extends AppCompatActivity {
                 String games365Values = games365Doc.getElementsByClass("product").text();
                 Elements gameFirstValue = games365Doc.getElementsByClass("product");
                 if(games365Doc != null && gameFirstValue.size() > 0){
-                    gameFirstValue.get(0);
+                    //gameFirstValue.get(0);
                     arrayList.add(gameFirstValue.get(0).text());
                 }else {
                     arrayList.add("No results found");
@@ -271,9 +354,9 @@ public class MainActivity2 extends AppCompatActivity {
                 String ebayValues = ebayDoc.getElementsByClass("s-item__wrapper clearfix").text();
                 Elements ebayFirstValue = ebayDoc.getElementsByClass("s-item__wrapper clearfix");
                 if(ebayDoc != null && ebayFirstValue.size() > 0){
-                    ebayFirstValue.get(3);
+                    //ebayFirstValue.get(3);
                     //starts from 3 due to website layout
-                    arrayList.add(gameFirstValue.get(0).text());
+                    arrayList.add(ebayFirstValue.get(3).text());
                 }else {
                     arrayList.add("No results found");
                 }
@@ -311,6 +394,7 @@ public class MainActivity2 extends AppCompatActivity {
         }
 
     }
+
 
 
 }
